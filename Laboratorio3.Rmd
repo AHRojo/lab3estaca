@@ -5,10 +5,28 @@ output: html_notebook
 
 1.
 
+```{r}
+library(fitdistrplus)
+library(logspline)
+library(readr)
+
+
+reviews <- read.csv("~/Desktop/lab3estaca/LasVegasTripAdvisorReviews-Dataset.csv", sep=";")
+```
 
 
 2.
 
+a)
+
+```{r}
+USA <- subset(reviews, User.country == "USA" & Member.years >= 0)
+
+hist(USA$Member.years, col = rainbow(10), main = "Histograma de los años de miembros", xlab = "Rango de Edades", ylab = "Cantidad")
+
+muestra <- sample(USA$Member.years, size=200)
+
+```
 
 
 3.
