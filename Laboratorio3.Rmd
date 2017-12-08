@@ -6,10 +6,8 @@ output: html_notebook
 1.
 
 ```{r}
-library(fitdistrplus)
-library(logspline)
 library(readr)
-
+library(MASS)
 
 reviews <- read.csv("~/Desktop/lab3estaca/LasVegasTripAdvisorReviews-Dataset.csv", sep=";")
 ```
@@ -20,11 +18,35 @@ reviews <- read.csv("~/Desktop/lab3estaca/LasVegasTripAdvisorReviews-Dataset.csv
 a)
 
 ```{r}
+
+#datos <- subset(reviews, Member.years >= 0)
+#data <- hist(datos$Member.years, col = rainbow(10), main = "alo", prob = TRUE)
+
 USA <- subset(reviews, User.country == "USA" & Member.years >= 0)
 
-hist(USA$Member.years, col = rainbow(10), main = "Histograma de los años de miembros", xlab = "Rango de Edades", ylab = "Cantidad")
+#hist(USA$Member.years, col = rainbow(10), main = "Histograma de los años de miembros", xlab = "Rango de Edades", ylab = "Cantidad", prob = TRUE)
+#lines(density(USA$Member.years))
+#histo
 
-muestra <- sample(USA$Member.years, size=200)
+mediana = 0
+media = 0
+varianza = 0
+
+for(i in 1:1000){
+  muestra <- sample(USA$Member.years, size=200)
+  media = media + mean(muestra)
+  mediana = mediana + median(muestra)
+  varianza = varianza + var(muestra)
+}
+
+mediana = mediana / 1000
+media = media / 1000
+varianza = varianza / 1000
+
+mediana
+media
+varianza
+
 
 ```
 
