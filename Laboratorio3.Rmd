@@ -12,6 +12,95 @@ library(MASS)
 reviews <- read.csv("~/Desktop/lab3estaca/LasVegasTripAdvisorReviews-Dataset.csv", sep=";")
 ```
 
+a)
+
+Se elige como muestra para analizar los scores de USA y Canada
+
+```{r}
+scores_USA <- subset(reviews, User.country == "USA")
+scores_canada <- subset(reviews, User.country == "Canada")
+```
+
+Se presenta a continuación una tabla con las medias, medianas y desviación estandar de ambos subconjuntos.
+
+```{r}
+tabla <- matrix(c(mean(scores_USA$Score, na.rm = TRUE), var(scores_USA$Score, na.rm = TRUE), sd(scores_USA$Score, na.rm = TRUE), median(scores_USA$Score, na.rm = TRUE), mean(scores_canada$Score, na.rm = TRUE), var(scores_canada$Score, na.rm = TRUE), sd(scores_canada$Score, na.rm = TRUE), median(scores_canada$Score, na.rm = TRUE)), ncol = 4, byrow = TRUE)
+
+colnames(tabla) <- c("Media", "Varianza", "Des_Estandar", "Mediana")
+rownames(tabla) <- c("USA", "Canada")
+
+tabla <- as.table(tabla)
+tabla
+```
+Hablar de esto
+
+```{r}
+boxplot(scores_USA$Score, scores_canada$Score, names = c("USA", "Canada"), col = rainbow(2), ylab = "Score", main = "Boxplot de Scores para USA vs Canada")
+```
+Notar que las el segundo cuartil de cada caso se encuentra casi a la misma altura, en general se puede ver que la apreciación de los norteamericanos es mayor que la de los canadienses los cuales tienen una opinion mas variada.
+
+b)
+Se determinan los 10 paises con mayor cantidad de reviews.
+
+```{r}
+x2 <- aggregate(reviews$Nr..reviews, by=list(reviews$User.country), FUN=sum)
+x2 <- x2[order(-x2$x), ][1:10, ]
+x2
+```
+
+Se realiza el barplot.
+
+```{r}
+reviews_UK <- subset(reviews, User.country == "UK")
+reviews_australia <- subset(reviews, User.country == "Australia")
+reviews_germany <- subset(reviews, User.country == "Germany")
+reviews_mexico <- subset(reviews, User.country == "Mexico")
+reviews_india <- subset(reviews, User.country == "India")
+reviews_arabia <- subset(reviews, User.country == "Saudi Arabia")
+reviews_ireland <- subset(reviews, User.country == "Ireland")
+reviews_nether <- subset(reviews, User.country == "Netherlands")
+
+barplot(c(12419, 3186, 2128, 1256, 385, 376, 349, 320, 314, 312), main = "Barplot de cantidad de reviews para los 10 paises con mas reviews", col = rainbow(10), names = c("USA", "UK", "Canada", "Australia", "Germany", "Mexico", "India", "Saudi Arabia", "Ireland", "Netherlands"), ylab = "Reviews", cex.names = 0.6)
+```
+
+
+d)
+
+Se procede a calcular el intervalo de confianza de la media.
+Para intervalos de confianza de 90, 95 y 99% respectivamente:
+```{r}
+t.test(reviews$Nr..rooms, conf.level = 0.90)
+t.test(reviews$Nr..rooms, conf.level = 0.95)
+t.test(reviews$Nr..rooms, conf.level = 0.99)
+
+```
+Donde se observan los intervalos de confianza como se indica:
+Con 90% de confianza: [1881.130, 2169.801]
+Con 95% de confianza: [1853.252, 2197.679]
+Con 99% de confianza: [1798.401 2252.530]
+
+Con valor de media muestral igual a 2025.465.
+
+
+e)
+```{r}
+chisq.test(reviews$Nr..rooms, reviews$Score)
+```
+H0 -> los factores son independientes
+H1 -> Los factores no son independientes
+
+Si p-valor es menor que el nivel de significancia se rechaza la hipotesis nula, chamullar.
+
+f)
+
+El test Mann-Whitney-Wilcoxon sirve para determinar si 2 muestras siguen la misma distribución sin asumir que siguen una distribución normal.
+```{r}
+wilcox.test(reviews$Nr..rooms, reviews$Score) 
+```
+H0 -> las muestras tienen igual distribución
+H1 -> las muestras tienen distribución distintas
+
+sigue el mismo caso que lo anterior, si el p-valor es menor que el nivel de significancia entonces no tienen la misma distribución, esta confirmala con difroggy.
 
 2.
 
