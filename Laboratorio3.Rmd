@@ -32,12 +32,17 @@ rownames(tabla) <- c("USA", "Canada")
 tabla <- as.table(tabla)
 tabla
 ```
-Hablar de esto
+Se puede ver que en general ambos paises aparentan tener valores similares en cada comparación, la media tiene una diferencia de 0,05 unidades aproximadamente, mientras que la varianza es de 0,16 unidades (es la mayor diferencia apreciable para estos valores), la desviación estandar posee una diferencia de 0,08 y la mediana es igual para ambos casos.
+
+Se puede desprender de esta información dos posibilidades, la primera, en general el publico estado unidense califica su estadia en los hoteles mejor que Canada, la segunda la cantidad de votantes estado unidenses es mucho mayor que la de Canada lo que permite una mejor diferenciación en medias.
+
 
 ```{r}
 boxplot(scores_USA$Score, scores_canada$Score, names = c("USA", "Canada"), col = rainbow(2), ylab = "Score", main = "Boxplot de Scores para USA vs Canada")
 ```
-Notar que las el segundo cuartil de cada caso se encuentra casi a la misma altura, en general se puede ver que la apreciación de los norteamericanos es mayor que la de los canadienses los cuales tienen una opinion mas variada.
+Notar que el segundo cuartil de cada caso se encuentra casi a la misma altura, en general se puede ver que la apreciación de los norteamericanos es mayor que la de los canadienses los cuales tienen una opinion mas variada, tal como se nombro anteriormente.
+
+Se pueden ver un par de valores extremos (outliers) dentro del boxplot de USA, se puede concluir que en muy pocas ocaciones USA califica mal sus propios hoteles.
 
 b)
 Se determinan los 10 paises con mayor cantidad de reviews.
@@ -53,7 +58,7 @@ Se realiza el barplot.
 ```{r}
 barplot(c(12419, 3186, 2128, 1256, 385, 376, 349, 320, 314, 312), main = "Barplot de cantidad de reviews para los 10 paises con mas reviews", col = rainbow(10), names = c("USA", "UK", "Canada", "Australia", "Germany", "Mexico", "India", "Saudi Arabia", "Ireland", "Netherlands"), ylab = "Reviews", cex.names = 0.6)
 ```
-
+Haciendo referencia a los comentarios anteriores, se puede confirmar gracias a este gráfico que la cantidad de ciudadanos de USA que se hospedan en las vegas es mucho mayor que los de otros paises.
 
 d)
 
@@ -66,11 +71,11 @@ t.test(reviews$Nr..rooms, conf.level = 0.99)
 
 ```
 Donde se observan los intervalos de confianza como se indica:
-Con 90% de confianza: [1881.130, 2169.801]
-Con 95% de confianza: [1853.252, 2197.679]
-Con 99% de confianza: [1798.401 2252.530]
+Con 90% de confianza: [2102.023, 2290.739]
+Con 95% de confianza: [2083.883, 2308.879]
+Con 99% de confianza: [2048.328, 2344.434]
 
-Con valor de media muestral igual a 2025.465.
+Con valor de media muestral igual a 2196.381.
 
 
 e)
@@ -80,11 +85,11 @@ chisq.test(reviews$Nr..rooms, reviews$Score)
 H0 -> los factores son independientes
 H1 -> Los factores no son independientes
 
-Si p-valor es menor que el nivel de significancia se rechaza la hipotesis nula, chamullar.
+Si p-valor es menor que el nivel de significancia se rechaza la hipotesis nula, ____chamullar____.
 
 f)
 
-El test Mann-Whitney-Wilcoxon sirve para determinar si 2 muestras siguen la misma distribución sin asumir que siguen una distribución normal.
+El test Mann-Whitney-Wilcoxon sirve para determinar si 2 muestras siguen la misma distribución sin asumir que siguen una distribución normal (SADAKA VE SI PUEDES ESCRIBIR LGO MAS ACA).
 ```{r}
 wilcox.test(reviews$Nr..rooms, reviews$Score) 
 ```
@@ -99,27 +104,25 @@ a)
 
 ```{r}
 
-#datos <- subset(reviews, Member.years >= 0)
-#data <- hist(datos$Member.years, col = rainbow(10), main = "alo", prob = TRUE)
 
 USA <- subset(reviews, User.country == "USA" & Member.years >= 0)
+#Se eliminarn los valores que no tienen sentidos como la posibilidad de ser un miembro por menos de 0 años.
 
-#hist(USA$Member.years, col = rainbow(10), main = "Histograma de los años de miembros", xlab = "Rango de Edades", ylab = "Cantidad", prob = TRUE)
-#lines(density(USA$Member.years))
-#histo
-
+#Se inicializan las variables en 0
 mediana = 0
 media = 0
 varianza = 0
 
+#Se realizan 1000 muestras de la muestra inicial
 for(i in 1:1000){
-  muestra <- sample(USA$Member.years, size=200)
-  media = media + mean(muestra)
-  mediana = mediana + median(muestra)
-  varianza = varianza + var(muestra)
+  muestra <- sample(USA$Member.years, size=200) #Se elige una submuestra aleatoria
+  media = media + mean(muestra) #se agrega la media de la submuestra 
+  mediana = mediana + median(muestra) #Se agrega la mediana de la submuestra
+  varianza = varianza + var(muestra) #Se agrega la varianza de la submuestra
 }
 
-mediana = mediana / 1000
+#Se obtiene el promedio de todos los datos para obtener un estimador de la mediana, media y varianza.
+mediana = mediana / 1000  
 media = media / 1000
 varianza = varianza / 1000
 
