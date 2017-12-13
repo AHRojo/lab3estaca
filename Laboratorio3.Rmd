@@ -51,15 +51,6 @@ x2
 Se realiza el barplot.
 
 ```{r}
-reviews_UK <- subset(reviews, User.country == "UK")
-reviews_australia <- subset(reviews, User.country == "Australia")
-reviews_germany <- subset(reviews, User.country == "Germany")
-reviews_mexico <- subset(reviews, User.country == "Mexico")
-reviews_india <- subset(reviews, User.country == "India")
-reviews_arabia <- subset(reviews, User.country == "Saudi Arabia")
-reviews_ireland <- subset(reviews, User.country == "Ireland")
-reviews_nether <- subset(reviews, User.country == "Netherlands")
-
 barplot(c(12419, 3186, 2128, 1256, 385, 376, 349, 320, 314, 312), main = "Barplot de cantidad de reviews para los 10 paises con mas reviews", col = rainbow(10), names = c("USA", "UK", "Canada", "Australia", "Germany", "Mexico", "India", "Saudi Arabia", "Ireland", "Netherlands"), ylab = "Reviews", cex.names = 0.6)
 ```
 
@@ -141,4 +132,45 @@ varianza
 
 
 3.
+a)
+```{r}
+load("sinewave.RData")
 
+plot(dirtywave)
+```
+    Se puede notar que al final del plot existe un outlier del tipo global, ya que este se encuentra notablemente fuera del rango de valores posibles, desde x = 30 en adelante se podrían considerar dichos outliers del tipo colectivo, ya que estos aparentan tener un comportamiento parecido, pero en puntos distintos, posiblemente se deba a un error de calibración. Finalmente para los 3 primeros outliers se podría considerar igual que el anterior.
+    
+    
+    b)
+    Se genera un boxplot para mostrar los outliers mas significativos.
+    
+```{r}
+boxplot(dirtywave$y, col = rainbow(1), main = "Boxplot de dirtywave para determinar outliers", ylab = "y", xlab = "Dirtywave")
+```  
+    Se puede notar un valor extremo sobre el bigote superior el cual se encuentra cercano al valor 3, al ser un valor muy distinto del rango común de la función se reemplazara el outlier con la media.
+    
+```{r}
+media <- mean(dirtywave$y)
+
+
+outlier.replace(dirtywave$y, alpha = 0.05, value = media)
+```
+
+    
+    
+    c)
+    
+    
+    
+    
+    
+    d)
+    
+    
+    
+    
+    e
+    
+    
+    
+  
