@@ -3,13 +3,28 @@ title: "R Notebook"
 output: html_notebook
 ---
 
+Laboratorio 3
+
+Estadística Computacional
+
+
+05 de Noviembre del 2017
+
+
+Andrés Huerta Rojo 201473544-8 andres.huerta.14@sansano.usm.cl Malla Nueva
+
+Gonzalo Duran Saez 201473507-3 gonzalo.duran.14@sansano.usm.cl Malla Nueva
+
+
+
 1.
 
 ```{r}
 library(readr)
 library(MASS)
+library(dplyr)
 
-reviews <- read.csv("~/Desktop/lab3estaca/LasVegasTripAdvisorReviews-Dataset.csv", sep=";")
+reviews <- read.csv("LasVegasTripAdvisorReviews-Dataset.csv", sep=";")
 ```
 
 a)
@@ -62,18 +77,20 @@ Haciendo referencia a los comentarios anteriores, se puede confirmar gracias a e
 
 d)
 
-Se procede a calcular el intervalo de confianza de la media.
+Se procede a calcular el intervalo de confianza de la media, se considera una vez cada hotel para evitar repeticiones. En el codigo se obtiene cada hotel con su cantidad de habitaciones.
 Para intervalos de confianza de 90, 95 y 99% respectivamente:
 ```{r}
-t.test(reviews$Nr..rooms, conf.level = 0.90)
-t.test(reviews$Nr..rooms, conf.level = 0.95)
-t.test(reviews$Nr..rooms, conf.level = 0.99)
+Hoteles_VEGAS <- distinct(reviews, Hotels.name, Nr..rooms  , .keep_all = FALSE)
+
+t.test(Hoteles_VEGAS$Nr..rooms, conf.level = 0.90)
+t.test(Hoteles_VEGAS$Nr..rooms, conf.level = 0.95)
+t.test(Hoteles_VEGAS$Nr..rooms, conf.level = 0.99)
 
 ```
 Donde se observan los intervalos de confianza como se indica:
-Con 90% de confianza: [2102.023, 2290.739]
-Con 95% de confianza: [2083.883, 2308.879]
-Con 99% de confianza: [2048.328, 2344.434]
+Con 90% de confianza: [1701.118, 2691.644]
+Con 95% de confianza: [1597.384, 2795.378]
+Con 99% de confianza: [1379.324, 3013.437]
 
 Con valor de media muestral igual a 2196.381.
 
@@ -85,18 +102,22 @@ chisq.test(reviews$Nr..rooms, reviews$Score)
 H0 -> los factores son independientes
 H1 -> Los factores no son independientes
 
-Si p-valor es menor que el nivel de significancia se rechaza la hipotesis nula, ____chamullar____.
+Si p-valor es menor que el nivel de significancia se rechaza la hipotesis nula, lo cual implica que la independencia se hace presente.
+
+
+
 
 f)
 
-El test Mann-Whitney-Wilcoxon sirve para determinar si 2 muestras siguen la misma distribución sin asumir que siguen una distribución normal (SADAKA VE SI PUEDES ESCRIBIR LGO MAS ACA).
+El test Mann-Whitney-Wilcoxon sirve para determinar si 2 muestras siguen la misma distribución sin asumir que siguen una distribución normal.
+
 ```{r}
 wilcox.test(reviews$Nr..rooms, reviews$Score) 
 ```
 H0 -> las muestras tienen igual distribución
 H1 -> las muestras tienen distribución distintas
 
-sigue el mismo caso que lo anterior, si el p-valor es menor que el nivel de significancia entonces no tienen la misma distribución, esta confirmala con difroggy.
+sigue el mismo caso que lo anterior, si el p-valor es menor que el nivel de significancia entonces no tienen la misma distribución. Se observa que con el p-valor dado, se puede rechazar la hipotesis nula, en valores mayores se acepta, la hipotesis en que las variables tienen distribuciones identicas.
 
 2.
 
@@ -150,7 +171,7 @@ plot(dirtywave)
 ```{r}
 boxplot(dirtywave$y, col = rainbow(1), main = "Boxplot de dirtywave para determinar outliers", ylab = "y", xlab = "Dirtywave")
 ```  
-    Se puede notar un valor extremo sobre el bigote superior el cual se encuentra cercano al valor 3, al ser un valor muy distinto del rango común de la función se reemplazara el outlier con la media.
+    Se puede notar un valor extremo sobre el bigote superior el cual se encuentra cercano al valor 3, al ser un valor muy distinto del rango común de la función se reemplazara el outlier con la media. 
     
 ```{r}
 media <- mean(dirtywave$y)
@@ -161,7 +182,7 @@ outlier.replace(dirtywave$y, alpha = 0.05, value = media)
 
     
     
-    c)
+    c) 
     
     
     
@@ -172,7 +193,7 @@ outlier.replace(dirtywave$y, alpha = 0.05, value = media)
     
     
     
-    e
+    e)
     
     
     
